@@ -1,14 +1,27 @@
 package com.clinica_service.domain.dto.regranegocio;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
+@Schema(description = "DTO de saída da Clínica para solicitação de exames ao Centro Médico/Laboratório")
 public class PayloadExameDTO {
 
-        private Long consultaId;
-        private String cpfPaciente;
-        private String tipoExame;
-        private LocalDateTime horario;
-        private String prioridade;
+    @Schema(description = "Vínculo com o ID da consulta realizada na clínica", example = "305")
+    private Long consultaId;
+
+    @Schema(description = "CPF do paciente que recebeu o encaminhamento", example = "123.456.789-10")
+    private String cpfPaciente;
+
+    @Schema(description = "Descrição do exame solicitado pelo médico (ex: Tomografia, Sangue)", example = "Ressonância Magnética")
+    private String tipoExame;
+
+    @Schema(description = "Data e hora sugerida para a realização do procedimento", example = "2025-12-30T10:00:00")
+    private LocalDateTime horario;
+
+    @Schema(description = "Prioridade definida pelo médico (Normal ou Emergencial)", example = "Emergencial")
+    private String prioridade;
+
+    // Getters e Setters
 
     public Long getConsultaId() {
         return consultaId;

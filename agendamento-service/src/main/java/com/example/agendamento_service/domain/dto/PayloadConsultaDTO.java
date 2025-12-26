@@ -1,12 +1,24 @@
 package com.example.agendamento_service.domain.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
+@Schema(description = "Objeto de transferência para sincronização de dados de consulta entre microsserviços")
 public class PayloadConsultaDTO {
+
+    @Schema(description = "Identificador único da consulta gerado pelo serviço de agendamento", example = "10")
     private Long id;
+
+    @Schema(description = "CPF do paciente vinculado à consulta (com pontuação)", example = "123.456.789-10")
     private String cpfPaciente;
+
+    @Schema(description = "Data e horário da consulta no formato ISO 8601", example = "2025-12-30T14:30:00")
     private LocalDateTime horario;
+
+    @Schema(description = "Especialidade do médico requisitada para o atendimento", example = "Cardiologia")
     private String especialidadeMedico;
+
+    // Getters e Setters
 
     public Long getId() {
         return id;
@@ -40,4 +52,3 @@ public class PayloadConsultaDTO {
         this.cpfPaciente = cpfPaciente;
     }
 }
-
