@@ -7,7 +7,7 @@ public class PayloadExameDTO {
     private String cpfPaciente;
     private String tipoExame;
     private LocalDateTime horario;
-    private String prioridade; // Adicione este campo para receber "ALTA" ou "EMERGENCIAL"
+    private String prioridade;
 
     public Long getConsultaId() {
         return consultaId;

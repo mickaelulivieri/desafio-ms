@@ -23,4 +23,10 @@ spring:
     enabled: false
 
   rabbitmq:
-    addresses: amqps://kbsudddd:1S1J2JovlgG7DQdbkelRbZbFqu5iMkcn@moose.rmq.cloudamqp.com/kbsudddd
+    addresses: ${rabbit}
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3000ms
+          max-attempts: 3

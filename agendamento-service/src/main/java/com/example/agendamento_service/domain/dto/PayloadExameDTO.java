@@ -8,6 +8,7 @@ public class PayloadExameDTO {
     private String cpfPaciente;
     private String tipoExame;
     private LocalDateTime horario;
+    private String prioridade;
 
     public Long getConsultaId() {
         return consultaId;
@@ -39,5 +40,13 @@ public class PayloadExameDTO {
 
     public void setHorario(LocalDateTime horario) {
         this.horario = horario;
+    }
+
+    public String getPrioridade() {
+        return prioridade;
+    }
+
+    public void setPrioridade(String prioridade) {
+        this.prioridade = prioridade;
     }
 }

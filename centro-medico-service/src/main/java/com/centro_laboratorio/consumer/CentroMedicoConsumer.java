@@ -29,11 +29,13 @@ public class CentroMedicoConsumer {
     @RabbitListener(queues = RabbitConfig.QUEUE_CENTRO)
     @Transactional
     public void receive(PayloadExameDTO payload) {
+        // 1. Idempotência: Verifica se a consulta já foi processada para evitar duplicados
         if (recepcaoRepository.existsByConsultaId(payload.getConsultaId())) {
-            log.warn("Mensagem da consulta {} já processada.", payload.getConsultaId());
+            log.warn("Mensagem da consulta {} já processada ou em andamento.", payload.getConsultaId());
             return;
         }
 
+        // 2. Registro de Staging: Salva o início do processamento
         RequisicaoCentroMedico recepcao = new RequisicaoCentroMedico();
         recepcao.setConsultaId(payload.getConsultaId());
         recepcao.setCpfPaciente(payload.getCpfPaciente());
@@ -43,39 +45,45 @@ public class CentroMedicoConsumer {
         recepcaoRepository.save(recepcao);
 
         try {
+            // 3. Tratamento de Payload: Garante que a prioridade nunca seja nula
             String prioridade = (payload.getPrioridade() != null) ? payload.getPrioridade() : "PADRAO";
 
+            // 4. Validação de Regra de Negócio: Verifica conflitos de horário [cite: 173-176, 181-182]
             validarDisponibilidade(payload.getHorario(), prioridade);
 
+            // 5. Roteamento de Entidade: Decide se salva como Exame ou Procedimento
             if (isAltaComplexidade(payload.getTipoExame())) {
                 salvarProcedimento(payload, prioridade);
-                log.info("Procedimento de alta complexidade salvo: {}", payload.getTipoExame());
+                log.info("Procedimento de ALTA COMPLEXIDADE salvo: {}", payload.getTipoExame());
             } else {
                 salvarExame(payload, prioridade);
-                log.info("Exame simples salvo: {}", payload.getTipoExame());
+                log.info("EXAME SIMPLES salvo: {}", payload.getTipoExame());
             }
 
+            // 6. Finalização: Atualiza status para sucesso
             recepcao.setStatus("PROCESSADO");
             recepcaoRepository.save(recepcao);
 
         } catch (ConflictException e) {
             recepcao.setStatus("CONFLITO");
             recepcaoRepository.save(recepcao);
-            log.error("Conflito detectado: {}", e.getMessage());
+            log.error("Conflito de agendamento detectado: {}", e.getMessage());
         } catch (Exception e) {
             recepcao.setStatus("ERRO_INTERNO");
             recepcaoRepository.save(recepcao);
-            log.error("Erro ao processar mensagem: {}", e.getMessage());
+            log.error("Erro crítico ao processar mensagem da consulta {}: {}", payload.getConsultaId(), e.getMessage());
         }
     }
 
     private void validarDisponibilidade(LocalDateTime horario, String prioridadeNova) {
+        // Consulta ambos os repositórios para garantir que o horário está livre
         Optional<Exame> exameExistente = exameRepository.findByHorario(horario);
         Optional<Procedimento> procExistente = procedimentoRepository.findByHorario(horario);
 
         boolean horarioOcupado = exameExistente.isPresent() || procExistente.isPresent();
 
         if (horarioOcupado) {
+            // Regra Especial: Emergenciais podem sobrepor qualquer um, exceto outros emergenciais [cite: 175-176, 181-182]
             if ("Emergencial".equalsIgnoreCase(prioridadeNova)) {
                 boolean conflitoComOutroEmergencial =
                         (exameExistente.isPresent() && "Emergencial".equalsIgnoreCase(exameExistente.get().getPrioridade())) ||
@@ -84,9 +92,9 @@ public class CentroMedicoConsumer {
                 if (conflitoComOutroEmergencial) {
                     throw new ConflictException("O horário já possui um agendamento emergencial concomitante.");
                 }
-                log.info("Sobreposição permitida: Novo agendamento é Emergencial.");
+                log.info("Sobreposição permitida devido à prioridade Emergencial.");
             } else {
-                throw new ConflictException("O horário " + horario + " já está ocupado.");
+                throw new ConflictException("O horário solicitado (" + horario + ") já está ocupado no laboratório.");
             }
         }
     }
@@ -94,6 +102,7 @@ public class CentroMedicoConsumer {
     private boolean isAltaComplexidade(String tipo) {
         if (tipo == null) return false;
         String t = tipo.toLowerCase();
+        // Critérios definidos pelo desafio
         return t.contains("ressonância") || t.contains("tomografia") || t.contains("cirurgia");
     }
 

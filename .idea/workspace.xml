@@ -8,6 +8,13 @@
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/centro-medico-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/centro-medico-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/centro-medico-service/src/main/java/com/centro_laboratorio/consumer/CentroMedicoConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/centro-medico-service/src/main/java/com/centro_laboratorio/consumer/CentroMedicoConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/centro-medico-service/src/main/java/com/centro_laboratorio/controller/DisponibilidadeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/centro-medico-service/src/main/java/com/centro_laboratorio/controller/DisponibilidadeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/centro-medico-service/src/main/java/com/centro_laboratorio/controller/ExameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/centro-medico-service/src/main/java/com/centro_laboratorio/controller/ExameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/centro-medico-service/src/main/java/com/centro_laboratorio/domain/dto/regranegocio/PayloadExameDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/centro-medico-service/src/main/java/com/centro_laboratorio/domain/dto/regranegocio/PayloadExameDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/centro-medico-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/centro-medico-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clinica-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/clinica-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clinica-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/clinica-service/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +71,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.ClinicaServiceApplication">
+  <component name="RunManager" selected="Docker.docker-compose.yml: Compose Deployment">
     <configuration name="AgendamentoServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.agendamento_service.AgendamentoServiceApplication" />
       <module name="agendamento-service" />
@@ -92,6 +99,9 @@
       </method>
     </configuration>
     <configuration name="ClinicaServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <envs>
+        <env name="rabbit" value="amqps://fdcgepml:s5g226RImtYaXc-7lcQ9S5j4kXw-3gdN@shark.rmq.cloudamqp.com/fdcgepml" />
+      </envs>
       <option name="MAIN_CLASS_NAME" value="com.clinica_service.ClinicaServiceApplication" />
       <module name="clinica-service" />
       <extension name="coverage">
@@ -140,12 +150,19 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.AgendamentoServiceApplication" />
+      <item itemvalue="Application.CentroLaboratorioApplication" />
+      <item itemvalue="Application.ClinicaServiceApplication" />
+      <item itemvalue="Application.com.example.agendamento_service.AgendamentoServiceApplication" />
+      <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ClinicaServiceApplication" />
-        <item itemvalue="Application.CentroLaboratorioApplication" />
-        <item itemvalue="Application.com.example.agendamento_service.AgendamentoServiceApplication" />
         <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+        <item itemvalue="Application.ClinicaServiceApplication" />
+        <item itemvalue="Application.com.example.agendamento_service.AgendamentoServiceApplication" />
+        <item itemvalue="Application.CentroLaboratorioApplication" />
         <item itemvalue="Application.AgendamentoServiceApplication" />
       </list>
     </recent_temporary>
