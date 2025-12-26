@@ -2,116 +2,50 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>README - Sistema Hospitalar</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f4f7f6;
-        }
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px 8px 0 0;
-        }
-        section {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        h2 {
-            color: #2980b9;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-        }
-        .service-card {
-            border-left: 5px solid #2980b9;
-            background: #eef7fa;
-            padding: 15px;
-            margin: 10px 0;
-        }
-        .highlight {
-            font-weight: bold;
-            color: #c0392b;
-        }
-        ul {
-            padding-left: 20px;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        code {
-            background: #eee;
-            padding: 2px 5px;
-            border-radius: 4px;
-            font-family: 'Courier New', Courier, monospace;
-        }
+        body { font-family: 'Segoe UI', sans-serif; line-height: 1.4; color: #333; max-width: 700px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #2c3e50; }
+        h2 { color: #2980b9; margin-top: 25px; font-size: 1.2em; }
+        .bloco { background: #f9f9f9; padding: 10px; border-left: 4px solid #2980b9; margin: 10px 0; }
+        code { background: #eee; padding: 2px 4px; border-radius: 3px; }
+        .emoji { margin-right: 8px; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>🏥 Sistema de Gerenciamento Hospitalar</h1>
-    <p>Arquitetura de Microsserviços com Spring Boot e RabbitMQ</p>
-</header>
+    <h1>🏥 SISTEMA HOSPITALAR</h1>
+    <p>Arquitetura de microsserviços para gestão de consultas e exames.</p>
 
-<section>
-    <h2>🏗️ Arquitetura do Sistema</h2>
-    <p>O ecossistema é dividido em três serviços principais que colaboram para gerenciar o fluxo do paciente:</p>
+    <h2>🏗️ SERVIÇOS E PORTAS</h2>
+    <div class="bloco">
+        <span class="emoji">📅</span> <strong>Agendamento:</strong> Porta <code>8081</code> (Pacientes e Consultas)
+    </div>
+    <div class="bloco">
+        <span class="emoji">🩺</span> <strong>Clínica:</strong> Porta <code>8082</code> (Médicos e Diagnósticos)
+    </div>
+    <div class="bloco">
+        <span class="emoji">🧪</span> <strong>Laboratório:</strong> Porta <code>8083</code> (Exames e Cirurgias)
+    </div>
 
-    <div class="service-card">
-        <strong>1. Agendamento Service (Porta 8081):</strong> 
-        Responsável pelo cadastro de pacientes e marcação inicial de consultas e exames.
-    </div>
-    
-    <div class="service-card">
-        <strong>2. Clínica Service (Porta 8082):</strong> 
-        Gerencia o corpo médico, catálogo de sintomas e realiza o atendimento clínico com diagnósticos.
-    </div>
-    
-    <div class="service-card">
-        <strong>3. Centro Laboratório (Porta 8083):</strong> 
-        Processa exames de alta complexidade e cirurgias, gerenciando prioridades críticas.
-    </div>
-</section>
-
-<section>
-    <h2>🚀 Principais Funcionalidades</h2>
+    <h2>🚀 PASSO A PASSO PARA INICIAR</h2>
     <ul>
-        <li><strong>Validação Síncrona:</strong> O Agendamento consulta a Clínica em tempo real para verificar se o médico está disponível antes de confirmar.</li>
-        <li><strong>Mensageria Assíncrona:</strong> Utiliza CloudAMQP (RabbitMQ) para enviar pedidos de exames da Clínica para o Laboratório sem travar o sistema.</li>
-        <li><strong>Regra de Conflito:</strong> Impede que um mesmo CPF tenha agendamentos duplicados no mesmo horário (Retorno <code>409 Conflict</code>).</li>
-        <li><strong>Sistema de Emergência:</strong> No laboratório, atendimentos "Emergenciais" podem ocupar horários já agendados por exames simples.</li>
+        <li>Configurar <code>${rabbit}</code> no <code>application.yml</code> de cada serviço.</li>
+        <li>Cadastrar <strong>Médicos</strong> e <strong>Sintomas</strong> na Clínica (8082).</li>
+        <li>Cadastrar <strong>Pacientes</strong> no Agendamento (8081).</li>
+        <li>Realizar agendamento para disparar o fluxo de atendimento.</li>
     </ul>
-</section>
 
+    <h2>⚙️ REGRAS DO SISTEMA</h2>
+    <ul>
+        <li><strong>Conflitos:</strong> Erro <code>409 Conflict</code> para horários ocupados.</li>
+        <li><strong>Mensageria:</strong> Integração via RabbitMQ para exames.</li>
+        <li><strong>Prioridade:</strong> Casos "Emergenciais" sobrepõem horários comuns.</li>
+    </ul>
 
-
-<section>
-    <h2>🛠️ Dicas para Iniciar o Fluxo</h2>
-    <ol>
-        <li><strong>Configuração RabbitMQ:</strong> Certifique-se de que a variável <code>${rabbit}</code> em todos os <code>application.yml</code> contém a URL <code>amqps://</code> do CloudAMQP.</li>
-        <li><strong>População de Dados:</strong> Comece cadastrando Médicos e Sintomas na Clínica (Porta 8082) e Pacientes no Agendamento (Porta 8081).</li>
-        <li><strong>Iniciando Atendimento:</strong> Após agendar uma consulta, use o endpoint <code>/AtenderConsulta</code> na Clínica para simular o diagnóstico.</li>
-        <li><strong>Documentação:</strong> Use o Swagger em cada porta (8081, 8082, 8083) no caminho <code>/swagger-ui/index.html</code> para testar os endpoints interativamente.</li>
-    </ol>
-</section>
-
-<section>
-    <h2>⚠️ Observações Importantes</h2>
-    <p>
-        Para que o fluxo de exames funcione, a Clínica deve encontrar um agendamento prévio. Caso receba <span class="highlight">404 Not Found</span>, verifique se a mensagem do Agendamento chegou corretamente à tabela <code>db_requisicao_consulta</code> da Clínica via RabbitMQ.
-    </p>
-</section>
+    <h2>📖 DOCUMENTAÇÃO</h2>
+    <p>Acesse o Swagger UI em:</p>
+    <code>http://localhost:PORTA/swagger-ui/index.html</code>
 
 </body>
 </html>
