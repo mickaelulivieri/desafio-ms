@@ -1,0 +1,28 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: centro-laboratorio-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3309/centro_laboratorio_db?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: root
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+  rabbitmq:
+    addresses: amqps://kbsudddd:1S1J2JovlgG7DQdbkelRbZbFqu5iMkcn@moose.rmq.cloudamqp.com/kbsudddd
