@@ -1,14 +1,13 @@
-package com.clinica_service.domain.dto.regranegocio;
+package com.example.agendamento_service.domain.dto;
 
 import java.time.LocalDateTime;
 
 public class PayloadExameDTO {
 
-        private Long consultaId;
-        private String cpfPaciente;
-        private String tipoExame;
-        private LocalDateTime horario;
-        private String prioridade;
+    private Long consultaId;
+    private String cpfPaciente;
+    private String tipoExame;
+    private LocalDateTime horario;
 
     public Long getConsultaId() {
         return consultaId;
@@ -40,13 +39,5 @@ public class PayloadExameDTO {
 
     public void setHorario(LocalDateTime horario) {
         this.horario = horario;
-    }
-
-    public String getPrioridade() {
-        return prioridade;
-    }
-
-    public void setPrioridade(String prioridade) {
-        this.prioridade = prioridade;
     }
 }
